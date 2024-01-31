@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 11:40:24 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:57:17 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char *extract_env(char **env)
 	return (NULL);
 }
 
-char *get_path(char **av, char **env)
+char *get_path(char *av, char **env)
 {
 	int		i;
 	char	**allpaths;
@@ -33,7 +33,7 @@ char *get_path(char **av, char **env)
 	char	*subpath;
 	char 	**cmd;
 
-	cmd = ft_split(av[3], ' ');
+	cmd = ft_split(av, ' ');
 	allpaths = ft_split(extract_env(env), ':');
 	i = -1;
 	while (allpaths[++i])
@@ -51,42 +51,42 @@ char *get_path(char **av, char **env)
 	}
 	free_tab(cmd);
 	free_tab(allpaths);
-	exit(1);
+	return (NULL);
 }
 
-void	child_process(char **av, char **env)
+void	child_process(char **av, int *fd, char **env)
 {
-	char *path;
-	int	p
+	char	*path;
+	int		file;
+	char	**cmd;
 	
-	path = get_path(av, env);
-	execv(path);
+	path = get_path(av[2], env);
+	cmd = ft_split(av[2], ' ');
+	if (!path)
+		perror("path not found");
+	file = open(av[1], O_RDONLY, 0777);
+	dup2(file, 0);
+	close(fd[0]);
+	dup2(fd[1], 1);
+	execve(path, cmd, env);
 }
 
 
 int main(int ac, char **av, char *env)
 {
-	__pid_t	pid;
+	pid_t	pid;
+	int	fd[2];
 	
 	if(ac != 5)
 		exit(1);
 	pid = fork();
 	if (pid == -1)
 		exit(1);
+	pipe(fd);
 	if (pid == 0)
-		child_process(av, env);
+		child_process(av, fd, env);
 	if (pid > 0)
-		parent_process(av, env);
+		parent_process(av, fd, env);
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
-{
-	char *path;
-	(void)	ac;
-	(void)	av;
-	
-	path = extract_env(env);
-	printf("%s\n", path);
-	return (0);
-}
