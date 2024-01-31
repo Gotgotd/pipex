@@ -6,7 +6,7 @@
 /*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 15:57:17 by gautier          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:57:41 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ void	child_process(char **av, int *fd, char **env)
 	path = get_path(av[2], env);
 	cmd = ft_split(av[2], ' ');
 	if (!path)
-		perror("path not found");
+	{
+		perror("cmd1 path not found");
+		exit(1);
+	}
 	file = open(av[1], O_RDONLY, 0777);
 	dup2(file, 0);
 	close(fd[0]);
@@ -71,6 +74,20 @@ void	child_process(char **av, int *fd, char **env)
 	execve(path, cmd, env);
 }
 
+void	parent_process(cahr **av, int *fd, char **env)
+{
+	char	*path;
+	int		file;
+	char	**cmd;
+
+	path = get_path(av[3], env);
+	cmd = ft_split(av[3], ' ');
+	if (!path)
+	{
+		perror("cmd2 path not found");
+		exit(1);
+	}
+}
 
 int main(int ac, char **av, char *env)
 {
@@ -81,8 +98,7 @@ int main(int ac, char **av, char *env)
 		exit(1);
 	pid = fork();
 	if (pid == -1)
-		exit(1);
-	pipe(fd);
+		exit(1); pipe(fd);
 	if (pid == 0)
 		child_process(av, fd, env);
 	if (pid > 0)
