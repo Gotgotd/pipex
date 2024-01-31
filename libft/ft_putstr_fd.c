@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 14:59:17 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 11:39:02 by gdaignea         ###   ########.fr       */
+/*   Created: 2023/10/06 17:47:37 by gdaignea          #+#    #+#             */
+/*   Updated: 2023/10/09 11:03:00 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include "libft/libft.h"
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
 
-void	free_tab(char **tab)
-
-#endif
+	i = 0;
+	while (s[i])
+		ft_putchar_fd(s[i++], fd);
+}

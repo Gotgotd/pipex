@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 14:59:17 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 11:39:02 by gdaignea         ###   ########.fr       */
+/*   Created: 2023/10/04 14:46:17 by gdaignea          #+#    #+#             */
+/*   Updated: 2023/10/10 17:45:46 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include "libft/libft.h"
+void	ft_bzero(void *s, size_t n)
+{
+	char	*ptr;
 
-void	free_tab(char **tab)
-
-#endif
+	ptr = (char *) s;
+	while (n > 0)
+	{
+		*ptr++ = '\0';
+		n--;
+	}
+}

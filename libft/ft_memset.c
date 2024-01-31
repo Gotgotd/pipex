@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 14:59:17 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 11:39:02 by gdaignea         ###   ########.fr       */
+/*   Created: 2023/10/04 14:21:05 by gdaignea          #+#    #+#             */
+/*   Updated: 2023/10/12 10:36:52 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "libft.h"
 
-# include <unistd.h>
-# include "libft/libft.h"
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*ptr;
+	unsigned int	i;
 
-void	free_tab(char **tab)
-
-#endif
+	i = 0;
+	ptr = (unsigned char *) s;
+	while (n > 0)
+	{
+		ptr[i++] = (unsigned char) c;
+		n--;
+	}
+	return (ptr);
+}

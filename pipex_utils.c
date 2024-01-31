@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 14:59:17 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 11:39:02 by gdaignea         ###   ########.fr       */
+/*   Created: 2024/01/31 11:38:30 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/01/31 11:47:02 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
-
-# include <unistd.h>
-# include "libft/libft.h"
+#include "pipex.h"
 
 void	free_tab(char **tab)
+{
+	int	i;
 
-#endif
+	i = -1;
+	if (!tab)
+		return ;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab);
+}
