@@ -6,7 +6,7 @@
 /*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/01/31 16:57:41 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/02 11:58:42 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char *get_path(char *av, char **env)
 	i = -1;
 	while (allpaths[++i])
 	{
-		subpath = ft_strjoin(allpaths[i], '/');
+		subpath = ft_strjoin(allpaths[i], "/");
 		goodpath = ft_strjoin(subpath, cmd[0]);
 		free(subpath);
 		if (access(goodpath, F_OK | X_OK) == 0)
@@ -74,7 +74,7 @@ void	child_process(char **av, int *fd, char **env)
 	execve(path, cmd, env);
 }
 
-void	parent_process(cahr **av, int *fd, char **env)
+void	parent_process(char **av, int *fd, char **env)
 {
 	char	*path;
 	int		file;
@@ -87,18 +87,24 @@ void	parent_process(cahr **av, int *fd, char **env)
 		perror("cmd2 path not found");
 		exit(1);
 	}
+	file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	dup2(file, 1);
+	close(fd[1]);
+	dup2(fd[0], 0);
+	execve(path, cmd, env);
 }
 
-int main(int ac, char **av, char *env)
+int main(int ac, char **av, char **env)
 {
 	pid_t	pid;
 	int	fd[2];
 	
 	if(ac != 5)
 		exit(1);
+	pipe(fd);
 	pid = fork();
 	if (pid == -1)
-		exit(1); pipe(fd);
+		exit(1); 
 	if (pid == 0)
 		child_process(av, fd, env);
 	if (pid > 0)
