@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/02 11:58:42 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:25:53 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,12 @@ void	child_process(char **av, int *fd, char **env)
 	char	*path;
 	int		file;
 	char	**cmd;
-	
+
 	path = get_path(av[2], env);
 	cmd = ft_split(av[2], ' ');
 	if (!path)
 	{
+		free_tab(cmd);
 		perror("cmd1 path not found");
 		exit(1);
 	}
@@ -71,7 +72,13 @@ void	child_process(char **av, int *fd, char **env)
 	dup2(file, 0);
 	close(fd[0]);
 	dup2(fd[1], 1);
-	execve(path, cmd, env);
+	close(file);
+	close(fd[1]);
+	if (execve(path, cmd, env) == -1)
+	{
+		perror("child exec error\n");
+		exit(1);
+	}
 }
 
 void	parent_process(char **av, int *fd, char **env)
@@ -84,6 +91,7 @@ void	parent_process(char **av, int *fd, char **env)
 	cmd = ft_split(av[3], ' ');
 	if (!path)
 	{
+		free_tab(cmd);
 		perror("cmd2 path not found");
 		exit(1);
 	}
@@ -91,7 +99,13 @@ void	parent_process(char **av, int *fd, char **env)
 	dup2(file, 1);
 	close(fd[1]);
 	dup2(fd[0], 0);
-	execve(path, cmd, env);
+	close(file);
+	close(fd[0]);
+	if (execve(path, cmd, env) == -1)
+	{
+		perror("parent exec error\n");
+		exit(1);
+	}
 }
 
 int main(int ac, char **av, char **env)
@@ -107,7 +121,7 @@ int main(int ac, char **av, char **env)
 		exit(1); 
 	if (pid == 0)
 		child_process(av, fd, env);
-	if (pid > 0)
+	else
 		parent_process(av, fd, env);
 	return (0);
 }
