@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/06 17:16:04 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/12 13:06:54 by gautier          ###   ########.fr       */
+/*   Created: 2024/02/12 13:19:18 by gautier           #+#    #+#             */
+/*   Updated: 2024/02/12 13:19:27 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/pipex.h"
 
@@ -77,6 +78,11 @@ int	here_doc_init(char **av)
 
 	line = NULL;
     file1 = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0777);
+	if (file1 == -1)
+	{
+		perror("error opening file");
+		exit(1);
+	}
 	while(1)
     {
         write(1, "pipe here_doc>", 14);
@@ -111,6 +117,11 @@ void    here_doc(int ac, char **av, char **env)
 	here_doc_init(av);
 	file1 = open("here_doc", O_RDONLY, 0777);
     file2 = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (file1 == -1 || file2 == -1)
+	{
+		perror("error opening file");
+		exit(1);
+	}
 	dup2(file1, 0);
 	while (i < ac - 2)
 		init_pipe(av[i++], env);

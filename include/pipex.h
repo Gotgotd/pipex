@@ -6,7 +6,7 @@
 /*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 14:59:17 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/12 13:06:54 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/12 13:19:42 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <unistd.h>
 # include "../libft/libft.h"
 # include <fcntl.h>
-# include "../ft_printf/ft_printf.h"
 
 
 /* PIPEX */
