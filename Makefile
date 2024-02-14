@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 CFLAGS = -g -Wall -Wextra -Werror
 RM = rm -rf
 NAME = pipex
@@ -20,7 +20,6 @@ $(NAME): $(OBJ_1) $(LIBFT) $(PRINTF)
 
 $(BONUS) : $(OBJ_BONUS) $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJ_BONUS) -o $(BONUS) $(LIBFT)
-
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

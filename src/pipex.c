@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/06 14:36:15 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/14 10:28:20 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-char *extract_env(char **env)
+char	*extract_env(char **env)
 {
 	int	i;
 
@@ -25,13 +25,13 @@ char *extract_env(char **env)
 	return (NULL);
 }
 
-char *get_path(char *av, char **env)
+char	*get_path(char *av, char **env)
 {
 	int		i;
 	char	**allpaths;
 	char	*goodpath;
 	char	*subpath;
-	char 	**cmd;
+	char	**cmd;
 
 	cmd = ft_split(av, ' ');
 	allpaths = ft_split(extract_env(env), ':');
@@ -69,6 +69,8 @@ void	child_process(char **av, int *fd, char **env)
 		exit(1);
 	}
 	file = open(av[1], O_RDONLY, 0777);
+	if (file == -1)
+		ft_error(1);
 	dup2(file, 0);
 	close(fd[0]);
 	dup2(fd[1], 1);
@@ -108,27 +110,30 @@ void	parent_process(char **av, int *fd, char **env)
 	}
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	pid_t	pid;
-	int	fd[2];
-	
-	if(ac != 5)
+	int		fd[2];
+
+	if (ac != 5)
 	{
-		perror("Error. program must be executed as follow : ./pipex file1 cmd1 cdm2 file2");
+		perror("Error. arguments invalid");
 		exit(1);
 	}
-	pipe(fd);
+	if (pipe(fd) == -1)
+	{
+		perror("pipe error.");
+		exit(1);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork error.");
 		exit(1);
-	} 
+	}
 	if (pid == 0)
 		child_process(av, fd, env);
 	else
 		parent_process(av, fd, env);
 	return (0);
 }
-

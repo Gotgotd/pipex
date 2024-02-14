@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:38:30 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/02/12 13:06:54 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/12 13:49:53 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-char *extract_env(char **env)
+char	*extract_env(char **env)
 {
 	int	i;
 
@@ -37,24 +37,24 @@ char *extract_env(char **env)
 	return (NULL);
 }
 
-void    execute(char *av, char **env)
+void	execute(char *av, char **env)
 {
-    char    *path;
-    char    **cmd;
+	char	*path;
+	char	**cmd;
 
-    path = get_path(av, env);
-    cmd = ft_split(av, ' ');
-    if (!path)
-    {
-        free_tab(cmd);
-        perror("error. path to cmd not found.");
-        exit(1);
-    }
-    if (execve(path, cmd, env) == -1)
-    {
-        free(path);
-        free_tab(cmd);
-        perror("exec error");
-        exit(1);
-    }
+	path = get_path(av, env);
+	cmd = ft_split(av, ' ');
+	if (!path)
+	{
+		free_tab(cmd);
+		perror("error. path to cmd not found.");
+		exit(1);
+	}
+	if (execve(path, cmd, env) == -1)
+	{
+		free(path);
+		free_tab(cmd);
+		perror("exec error");
+		exit(1);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:38:30 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/02/06 14:36:15 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/14 10:26:12 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,21 @@ void	free_tab(char **tab)
 	while (tab[++i])
 		free(tab[i]);
 	free(tab);
+}
+
+void	ft_error(int flag)
+{
+	if (flag == 1)
+	{
+		
+	}
+	else if (flag == 2)
+	{
+
+	}
+	else if (flag == 3)
+	{
+		
+	}
+	else if (flag == 4)
 }
