@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:38:30 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/02/14 10:26:12 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:38:16 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,22 @@ void	ft_error(int flag)
 {
 	if (flag == 1)
 	{
-		
+		perror("Error. arguments invalid");
+		exit(1);
 	}
 	else if (flag == 2)
 	{
-
+		perror("pipe error.");
+		exit(1);
 	}
 	else if (flag == 3)
 	{
-		
+		perror("fork error.");
+		exit(1);
 	}
 	else if (flag == 4)
+	{
+		perror("error executing command");
+		exit(1);
+	}
 }
