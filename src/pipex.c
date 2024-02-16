@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/14 16:38:39 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:34:44 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	child_process(char **av, int *fd, char **env)
 	file = open(av[1], O_RDONLY, 0777);
 	if (file == -1)
 	{
+		free_tab(cmd);
+		free(path);
 		perror("error opening file");
 		exit (1);
 	}
@@ -98,8 +100,10 @@ void	parent_process(char **av, int *fd, char **env)
 		exit(1);
 	}
 	file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if(file == 1)
+	if (file == -1)
 	{
+		free_tab(cmd);
+		free(path);
 		perror("error opening file");
 		exit(1);
 	}
