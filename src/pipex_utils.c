@@ -6,7 +6,7 @@
 /*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 11:38:30 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/02/14 16:38:16 by gautier          ###   ########.fr       */
+/*   Updated: 2024/02/19 11:51:20 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,28 @@ void	ft_error(int flag)
 	else if (flag == 4)
 	{
 		perror("error executing command");
+		exit(1);
+	}
+}
+
+void	execute(char *av, char **env)
+{
+	char	*path;
+	char 	**cmd;
+
+	path = get_path(av, env);
+	cmd = ft_split(av, ' ');
+	if (!path)
+	{
+		free_tab(cmd);
+		perror("error. path to command not found");
+		exit(1);
+	}
+	if (execve(path, cmd, env) == -1)
+	{
+		free(path);
+		free_tab(cmd);
+		perror("exec error");
 		exit(1);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gautier <gautier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 12:05:35 by gautier           #+#    #+#             */
-/*   Updated: 2024/02/16 12:34:44 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:51:12 by gautier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,11 @@ char	*get_path(char *av, char **env)
 
 void	child_process(char **av, int *fd, char **env)
 {
-	char	*path;
 	int		file;
-	char	**cmd;
 
-	path = get_path(av[2], env);
-	cmd = ft_split(av[2], ' ');
-	if (!path)
-	{
-		free(cmd);
-		write(1, "error. path to command not found.", 33);
-		exit(1);
-	}
 	file = open(av[1], O_RDONLY, 0777);
 	if (file == -1)
 	{
-		free_tab(cmd);
-		free(path);
 		perror("error opening file");
 		exit (1);
 	}
@@ -81,29 +69,16 @@ void	child_process(char **av, int *fd, char **env)
 	dup2(fd[1], 1);
 	close(file);
 	close(fd[1]);
-	if (execve(path, cmd, env) == -1)
-		ft_error(4);
+	execute(av[2], env);
 }
 
 void	parent_process(char **av, int *fd, char **env)
 {
-	char	*path;
 	int		file;
-	char	**cmd;
 
-	path = get_path(av[3], env);
-	cmd = ft_split(av[3], ' ');
-	if (!path)
-	{
-		free_tab(cmd);
-		write(1, "error. path to command not found.", 33);
-		exit(1);
-	}
 	file = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (file == -1)
 	{
-		free_tab(cmd);
-		free(path);
 		perror("error opening file");
 		exit(1);
 	}
@@ -112,8 +87,7 @@ void	parent_process(char **av, int *fd, char **env)
 	dup2(fd[0], 0);
 	close(file);
 	close(fd[0]);
-	if (execve(path, cmd, env) == -1)
-		ft_error(4);
+	execute(av[3], env);
 }
 
 int	main(int ac, char **av, char **env)
